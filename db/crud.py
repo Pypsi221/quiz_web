@@ -1,8 +1,11 @@
 import sqlite3 
 
+
 DB_NAME = "quizes.db"
 conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
+
+
 
 def create_tables():
     cursor.execute('''CREATE TABLE IF NOT EXISTS quiz(
@@ -128,13 +131,23 @@ def close():
     global conn,cursor
     cursor.close()
     conn.close()
+def get_quizes():
+    open()
+    cursor.execute("SELECT *FROM quiz")
+    quizes = cursor.fetchall()
+    close()
+    return quizes
 
+def get_questions_after(quiz_id=1,question_id=0):
+    open()
+    cursor.execute("""SELECT q.id, q.question, q.answer, q.wrong1, q.wrong2, q.wrong3
+                      FROM questions, quiz_questions 
+                   WHERE quiz_questions.quiz_id=? AND
+                    quiz_questions.question_id > ? AND 
+                    questions.id = quiz_questions.question_id
+                   ORDER BY quiz_questions.question_id""",(quiz_id,question_id))
+    questions = cursor.fetchall()
+    close()
+    return questions
 
-
-def main():
-    create_tables()
-    add_questions()
-    add_quiz()
-    add_links()
-
-main()
+                   
