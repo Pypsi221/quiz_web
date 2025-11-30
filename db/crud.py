@@ -140,14 +140,17 @@ def get_quizes():
 
 def get_questions_after(quiz_id=1,question_id=0):
     open()
-    cursor.execute("""SELECT q.id, q.question, q.answer, q.wrong1, q.wrong2, q.wrong3
-                      FROM questions, quiz_questions 
-                   WHERE quiz_questions.quiz_id=? AND
-                    quiz_questions.question_id > ? AND 
-                    questions.id = quiz_questions.question_id
-                   ORDER BY quiz_questions.question_id""",(quiz_id,question_id))
-    questions = cursor.fetchall()
+    cursor.execute("""SELECT questions.id, questions.question, questions.answer, questions.wrong1, questions.wrong2, questions.wrong3
+                  FROM questions, quiz_questions
+                  WHERE quiz_questions.quiz_id = ? AND
+                  quiz_questions.question_id > ? AND
+                  quiz_questions.question_id = questions.id
+                  ORDER BY quiz_questions.id""", (quiz_id, question_id))
+
+    
+
+    question = cursor.fetchone()
     close()
-    return questions
+    return question
 
                    
