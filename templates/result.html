@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результат  тесту</title>
-<head>
-<body>
-    <h1>Результати тесту</h1>
-    <p>Правильних відповідей: {{ right }}</p>
-    <p>Неправильних відповідей: {{ wrong }}</p>
-    <p>Всього відповідей : {{ total }}</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Результати тесту{% endblock %}
+{% block content %}
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">Правильних відповідей: <strong>{{ right }}</strong></li>
+    <li class="list-group-item">Неправильних відповідей: <strong>{{ wrong }}</strong></li>
+    <li class="list-group-item">Всього відповідей: <strong>{{ total }}</strong></li>
+</ul>
+
+<!-- Повернення до вибору тесту -->
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <a href="/tests" class="accordion-button collapsed text-decoration-none">
+        </a>
+    </h2>
+</div>
+{% endblock %}

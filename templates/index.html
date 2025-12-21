@@ -3,13 +3,28 @@
 {% block content %}
 <h1>oбери вікторину</h1>
 <form method="POST" action="/">
-    <select name="quiz">
-        class="form-select form-select-lg mb-3" aria-label="Large select example"
+    <select name="quiz" id="quizSelect" class="form-select form-select-lg mb-3" aria-label="Large select example">
         {% for id, title,description in quizes_list %}
-        <option value="{{ id }}">{{ title }}</option>
+        <option value="{{ id }}" data-description="{{ description }}">{{ title }}</option>
         {% endfor %}
-
     </select>
+
+    <p id="quiz_description" class="text-muted"></p>
     <button type="submit" class="btn btn-dark">Обрати</button>
 </form>
+<script>
+    const select = document.getElementById("quizSelect");
+    const descriptionBlock = document.getElementById("quizDescription");
+
+
+    function updateDescription() {
+        const selectedOption = select.options[select.selectedIndex];
+        descriptionBlock.textContent =
+            selectedOption.dataset.description || "";
+    }
+
+
+    updateDescription();
+    select.addEventListener("change", updateDescription);
+</script>
 {% endblock %}
