@@ -152,5 +152,15 @@ def get_questions_after(quiz_id=1,question_id=0):
     question = cursor.fetchone()
     close()
     return question
+def check_right_answer(question_id, selected_answer):
+    open()
+    cursor.execute("""SELECT answer FROM questions WHERE id = ?""", (question_id,))
+    correct_answer = cursor.fetchone()[0]
+    close()
+    if selected_answer == correct_answer:
+        return True 
+    else:
+        return False
+
 
                    

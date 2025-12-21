@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,session,redirect,url_for
-from db.crud import get_quizes, get_questions_after
+from db.crud import get_quizes, get_questions_after, check_right_answer
 from random import shuffle
+
 
 app = Flask(__name__)
 app.secret_key = "1234567890 "
@@ -20,8 +21,14 @@ def question_form(question):
         question[5]
     ]
     shuffle(answwers_list)
-    return render_template("test.html", question_id=question[0], quest=question[1], ans_list=answwers_list)
+    return render_template("test.html", quest_id=question[0], quest=question[1], ans_list=answwers_list)
     
+def check_answer(question_id, selected_answer):
+    if check_right_answer(question_id, selected_answer):
+        session["correct_ans"] += 1
+    else:
+        session["wrong_ans"] += 1
+        session["total"] += 1
 
     
 
@@ -40,23 +47,28 @@ def index():
     
 
 
-@app.route("/test")
+@app.route("/test", methods=["GET", "POST"])
 def test():
     if not ("quiz_id" in session)  or  int(session["quiz_id"]) < 0:
         return redirect(url_for("index"))
-    else:
+    else: 
+        if request.method == "POST":
+            selected_answer = request.form.get("ans")
+            question_id = int(request.form.get("quest_id"))
+            check_answer(question_id, selected_answer)
+            session["last_question_id"] = question_id
+    
         new_question = get_questions_after(session["quiz_id"], session["last_question_id"])
         if new_question is None:
             return redirect(url_for("result"))
         else:
             return question_form(new_question)
         
-        
-
-
 @app.route("/result")
 def result():
-    return"<h1>result</h1>"
+    result = render_template("result.html", right=session["correct_ans"], wrong=session["wrong_ans"], total=session["total"])
+    session.clear()
+    return result
 
 if __name__ == '__main__':
     app.run()
