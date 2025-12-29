@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+  Створити вікторину
+{% endblock %}
+{% block content %}
+  <form action="/creat" method="POST">
+    <div class="input-group my-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">Назва вікторини</span>
+      <input type="text" name="quiz_name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+    </div>
+    <div class="input-group input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-lg">Опис вікторини</span>
+      <input type="text" name="quiz_description" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" />
+    </div>
+    <button type="submit" class="btn btn-primary">Створити вікторину</button>
+  </form>
+{% endblock %}

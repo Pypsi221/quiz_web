@@ -148,10 +148,12 @@ def get_questions_after(quiz_id=1,question_id=0):
                   ORDER BY quiz_questions.id""", (quiz_id, question_id))
 
     
-
-    question = cursor.fetchone()
+def create_quiz(title, description):
+    open()
+    cursor.execute("""INSERT INTO quiz (title, description) VALUES(?,?)""", (title, description))
+    conn.commit()
     close()
-    return question
+
 def check_right_answer(question_id, selected_answer):
     open()
     cursor.execute("""SELECT answer FROM questions WHERE id = ?""", (question_id,))

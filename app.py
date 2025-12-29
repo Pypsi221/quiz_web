@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,session,redirect,url_for
-from db.crud import get_quizes, get_questions_after, check_right_answer
+from db.crud import get_quizes, get_questions_after, check_right_answer, create_quiz
 from random import shuffle# імпортуємо необхідні модулі та функції
 
 
@@ -48,8 +48,23 @@ def index():
         start_session(quiz_id)
         return redirect(url_for("test"))# перенаправляємо на сторінку тестування
 
-    
+@app.route("/creat", methods=["GET", "POST"])
+def create():
+    if request.method == "POST":
+        quiz_name = request.form.get("quiz_name")
+        quiz_description = request.form.get("quiz_description")
+        create_quiz(quiz_name, quiz_description)
+        return redirect(url_for("index"))
+    return render_template("creat.html")
 
+
+@app.route("/creat_question", methods=["GET", "POST"])
+def creat_question():
+    pass
+
+@app.route("/all_results")
+def all_results():
+    pass
 # Сторінка тестування
 @app.route("/test", methods=["GET", "POST"])
 def test():
